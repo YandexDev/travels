@@ -8,3 +8,6 @@ class Country(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)  # Примет текущее время и не будет меняться
     time_update = models.DateTimeField(auto_now=True)  # Время будет меняться
     is_published = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

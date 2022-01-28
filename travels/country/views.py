@@ -1,9 +1,18 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
+from country.models import Country
+
+menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
+
 
 def index(request):
-    return HttpResponse("Главная страница сайта")
+    posts = Country.objects.all()
+    return render(request, 'country/index.html', {'posts': posts, 'menu': menu, 'title': 'Главная страница'})
+
+
+def about(request):
+    return render(request, 'country/about.html', {'menu': menu, 'title': 'О сайте'})
 
 
 def list_country(request):
