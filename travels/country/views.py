@@ -1,18 +1,65 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
-from country.models import Country
+from country.models import *
 
-menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
+menu = [{'title': "О сайте", 'url_name': 'about'},
+        {'title': "Добавить статью", 'url_name': 'add_page'},
+        {'title': "Обратная связь", 'url_name': 'contact'},
+        {'title': "Войти", 'url_name': 'login'}
+        ]
 
 
 def index(request):
     posts = Country.objects.all()
-    return render(request, 'country/index.html', {'posts': posts, 'menu': menu, 'title': 'Главная страница'})
+    cats = Continent.objects.all()
+    context = {
+        'posts': posts,
+        'cats': cats,
+        'menu': menu,
+        'title': 'Главная страница',
+        'cat_selected': 0,
+    }
+    return render(request, 'country/index.html', context)
+
+
+def show_continent(request, cat_id):
+    posts = Country.objects.filter(cat_id=cat_id)
+    cats = Continent.objects.all()
+    if len(posts) == 0:
+        raise Http404()
+    context = {
+        'posts': posts,
+        'cats': cats,
+        'menu': menu,
+        'title': 'Отображение по рубрикам',
+        'cat_selected': cat_id,
+    }
+    return render(request, 'country/index.html', context)
 
 
 def about(request):
-    return render(request, 'country/about.html', {'menu': menu, 'title': 'О сайте'})
+    context = {
+        'menu': menu,
+        'title': 'О сайте'
+    }
+    return render(request, 'country/about.html', context)
+
+
+def addpage(request):
+    return HttpResponse("Добавить статью")
+
+
+def contact(request):
+    return HttpResponse("Обратная связь")
+
+
+def login(request):
+    return HttpResponse("Войти")
+
+
+def show_post(request, post_title):
+    return HttpResponse(f"Пост {post_title}")
 
 
 def list_country(request):
