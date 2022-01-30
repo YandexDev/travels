@@ -8,8 +8,8 @@ urlpatterns = [
     path('addpage/', addpage, name="add_page"),
     path('contact/', contact, name="contact"),
     path('login/', login, name="login"),
-    path('post/<slug:post_title>/', show_post, name="post"),
-    path('continent/<int:cat_id>/', show_continent, name="continent"),
+    path('post/<slug:post_slug>/', show_post, name="post"),
+    path('continent/<slug:cat_slug>/', show_continent, name="continent"),
 
     path('country/', list_country),
     path('country/<slug:country>/', name_country),

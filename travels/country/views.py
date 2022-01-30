@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from country.models import *
 
@@ -21,17 +21,29 @@ def index(request):
     return render(request, 'country/index.html', context)
 
 
-def show_continent(request, cat_id):
-    posts = Country.objects.filter(cat_id=cat_id)
+def show_continent(request, cat_slug):
+    posts = Country.objects.filter(cat__slug=cat_slug)
     if len(posts) == 0:
         raise Http404()
     context = {
         'posts': posts,
         'menu': menu,
         'title': 'Отображение по рубрикам',
-        'cat_selected': cat_id,
+        'cat_selected': cat_slug,
     }
     return render(request, 'country/index.html', context)
+
+
+def show_post(request, post_slug):
+    post = get_object_or_404(Country, slug=post_slug)
+    context = {
+        'post': post,
+        'menu': menu,
+        'title': post.title,
+        'cat_selected': post.cat_id,
+    }
+
+    return render(request, 'country/post.html', context)
 
 
 def about(request):
@@ -52,10 +64,6 @@ def contact(request):
 
 def login(request):
     return HttpResponse("Войти")
-
-
-def show_post(request, post_title):
-    return HttpResponse(f"Пост {post_title}")
 
 
 def list_country(request):
