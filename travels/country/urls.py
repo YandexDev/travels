@@ -3,13 +3,13 @@ from django.urls import path, re_path
 from country.views import *
 
 urlpatterns = [
-    path('', index, name="homepage"),
+    path('', CountryHome.as_view(), name="homepage"),
     path('about/', about, name="about"),
-    path('addpage/', addpage, name="add_page"),
+    path('addpage/', AddPage.as_view(), name="add_page"),
     path('contact/', contact, name="contact"),
     path('login/', login, name="login"),
-    path('post/<slug:post_slug>/', show_post, name="post"),
-    path('continent/<slug:cat_slug>/', show_continent, name="continent"),
+    path('post/<slug:post_slug>/', ShowPost.as_view(), name="post"),
+    path('continent/<slug:cat_slug>/', CountryContinent.as_view(), name="continent"),
 
     path('country/', list_country),
     path('country/<slug:country>/', name_country),

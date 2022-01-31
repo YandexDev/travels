@@ -5,7 +5,7 @@ from django.urls import reverse
 
 
 class Country(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Заголовок")
+    title = models.CharField(max_length=255, verbose_name="Название страны")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name="Текст статьи")  # blank=True может быть пустым
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")  # загрузка в эту папку по дате
@@ -24,7 +24,7 @@ class Country(models.Model):
     class Meta:
         verbose_name = "Интересные страны"
         verbose_name_plural = "Интересные страны"
-        ordering = ['time_create', 'title']
+        ordering = ['-time_create', 'title']
 
 
 class Continent(models.Model):
