@@ -37,16 +37,24 @@
 			<ul id="leftchapters">
 
 				{% if cat_selected == 0 %}
-				<li class="selected">Все категории</li>
+				<li class="selected">Все континенты</li>
 				{% else %}
-				<li><a href="{% url 'homepage' %}">Все категории</a></li>
+				<li><a href="{% url 'homepage' %}">Все континенты</a></li>
 				{% endif %}
 
-				{% show_continents 'name' cat_selected %}
+				{% for c in cats %}
+				{% if c.country__count > 0 %}
+				{% if c.pk == cat_selected %}
+				<li class="selected">{{c.name}}</li>
+				{% else %}
+				<li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+				{% endif %}
+				{% endif %}
+				{% endfor %}
 
 				<li class="share">
 					<p>Наш канал</p>
-					<a class="share-yt" href="https://www.youtube.com/channel/UClJzWfGWuGJL2t-3dYKcHTA/playlists" target="_blank" rel="nofollow"></a>
+					<a class="share-yt" href="https://www.youtube.com/watch?v=a_FSfzQ2IW4&ab_channel=%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%A4%D0%B0%D0%BA%D1%82" target="_blank" rel="nofollow"></a>
 				</li>
 			</ul>
 		</td>

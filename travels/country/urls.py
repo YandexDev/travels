@@ -4,7 +4,7 @@ from country.views import *
 
 urlpatterns = [
     path('', CountryHome.as_view(), name="homepage"),
-    path('about/', about, name="about"),
+    path('about/', About.as_view(), name="about"),
     path('addpage/', AddPage.as_view(), name="add_page"),
     path('contact/', contact, name="contact"),
     path('login/', login, name="login"),

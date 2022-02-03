@@ -1,5 +1,3 @@
-import string
-
 from django.db import models
 from django.urls import reverse
 
@@ -13,7 +11,9 @@ class Country(models.Model):
                                        verbose_name="Время создания")  # Примет текущее время и не будет меняться
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время иземенения")  # Время будет меняться
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
-    cat = models.ForeignKey('Continent', on_delete=models.PROTECT, verbose_name="Континент")  # Первичная модель как строка, чтобы не было ошибки
+    population = models.FloatField('Популяция', blank=True, null=True)
+    # Первичная модель как строка, чтобы не было ошибки, related_name это country_set
+    cat = models.ForeignKey('Continent', on_delete=models.PROTECT, blank=True, null=True, verbose_name="Континент")
 
     def __str__(self):
         return self.title
@@ -24,7 +24,7 @@ class Country(models.Model):
     class Meta:
         verbose_name = "Интересные страны"
         verbose_name_plural = "Интересные страны"
-        ordering = ['-time_create', 'title']
+        # ordering = ['-time_create', 'title']
 
 
 class Continent(models.Model):
@@ -35,7 +35,7 @@ class Continent(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('continent', kwargs={'cat_slug': self.slug})
+        return reverse('continent', kwargs={'cat_slug': self.slug})  # Передает в url-шаблон post переменную cat_slug
 
     class Meta:
         verbose_name = "Континент"

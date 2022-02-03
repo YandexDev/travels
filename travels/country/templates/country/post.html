@@ -6,6 +6,8 @@
 {% if post.photo %}
 <p><img class="img-article-left" src="{{ post.photo.url }}"></p>
 {% endif %}
-
+{% if post.population%}
+<h4>Количество населения {{ post.population }} миллиона человек</h4>
+{% endif %}
 {{ post.content|linebreaks }}
 {% endblock %}

@@ -18,11 +18,11 @@ from country.models import *
 class AddPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['cat'].empty_label = "Материк не выбран"
+        self.fields['cat'].empty_label = "Не выбран"
 
     class Meta:
         model = Country
-        fields = ['title', 'slug', 'content', 'photo', 'is_published', 'cat']
+        fields = ['title', 'slug', 'content', 'population', 'photo', 'is_published', 'cat']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
             'content': forms.Textarea(attrs={'cols': 60, 'rows': 10}),
