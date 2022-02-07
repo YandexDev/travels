@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db.models import Count
 
 from .models import *
@@ -6,7 +7,6 @@ menu = [
     {'title': "О сайте", 'url_name': 'about'},
     {'title': "Добавить страну", 'url_name': 'add_page'},
     {'title': "Обратная связь", 'url_name': 'contact'},
-    {'title': "Войти", 'url_name': 'login'}
 ]
 
 
@@ -15,8 +15,10 @@ class DataMixin:
 
     def get_user_context(self, **kwargs):
         context = kwargs
-        cats = Continent.objects.annotate(Count('country'))
-
+        cats = cache.get('cats')
+        if not cats:
+            cats = Continent.objects.annotate(Count('country'))
+            cache.set('cats', cats, 60)
         user_menu = menu.copy()  # Если пользователь не авторизован, то удаляется вторая запись
         if not self.request.user.is_authenticated:
             user_menu.pop(1)

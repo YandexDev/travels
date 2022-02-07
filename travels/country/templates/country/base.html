@@ -2,7 +2,7 @@
 {% load country_tags %}
 
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 	<title>{{title}}</title>
 	<link type="text/css" href="{% static 'country/css/styles.css' %}" rel="stylesheet" />
@@ -18,12 +18,15 @@
 			<ul id="mainmenu" class="mainmenu">
 				<li class="logo"><a href="{% url 'homepage' %}"><div class="logo"></div></a></li>
 				{% for m in menu %}
-				{% if not forloop.last %}
 				<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-				{% else %}
-				<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
-				{% endif %}
 				{% endfor %}
+				{% if request.user.is_authenticated %}
+				<li class="last">{{ user.username }} | <a href="{% url 'logout' %}">Выйти</a></li>
+				{% else %}
+				<li class="last">
+					<a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a>
+				</li>
+				{% endif %}
 			</ul>
 			<div class="clear"></div>
 		</div>
@@ -35,6 +38,7 @@
 		<!-- Sidebar слева -->
 		<td valign="top" class="left-chapters">
 			<ul id="leftchapters">
+
 
 				{% if cat_selected == 0 %}
 				<li class="selected">Все континенты</li>
@@ -51,6 +55,7 @@
 				{% endif %}
 				{% endif %}
 				{% endfor %}
+
 
 				<li class="share">
 					<p>Наш канал</p>
