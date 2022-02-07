@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -21,7 +22,7 @@ class CountryHome(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Главная страница')
         # return dict(list(context.items()) + list(c_def.items()))
-        return context | c_def
+        return context | c_def  # Соединяем в один словарь
 
 
 class CountryContinent(DataMixin, ListView):
@@ -77,7 +78,11 @@ class About(DataMixin, TemplateView):
 
 @login_required
 def contact(request):
-    return HttpResponse("Обратная связь")
+    contact_list = Country.objects.all()
+    paginator = Paginator(contact_list, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'country/feedback.html', {'page_obj': page_obj})
 
 
 def login(request):

@@ -24,7 +24,7 @@ class Country(models.Model):
     class Meta:
         verbose_name = "Интересные страны"
         verbose_name_plural = "Интересные страны"
-        # ordering = ['-time_create', 'title']
+        ordering = ['id']
 
 
 class Continent(models.Model):
