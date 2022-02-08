@@ -5,11 +5,11 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import *
-from .models import *
-from .utils import *
+from .forms import AddPostForm, RegisterUserForm, LoginUserForm, ContactForm
+from .models import Country, Continent
+from .utils import DataMixin
 
 
 class CountryHome(DataMixin, ListView):
@@ -119,13 +119,28 @@ def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Ошибка 404. Страница не найдена</h1>")
 
 
-@login_required
-def contact(request):
-    contact_list = Country.objects.all()
-    paginator = Paginator(contact_list, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'country/feedback.html', {'page_obj': page_obj})
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'country/contact.html'
+    success_url = reverse_lazy('homepage')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Обратная связь")
+        return context | c_def
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('homepage')
+
+
+# @login_required
+# def contact(request):
+#     contact_list = Country.objects.all()
+#     paginator = Paginator(contact_list, 3)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     return render(request, 'country/feedback.html', {'page_obj': page_obj})
 #
 #
 # def list_country(request):

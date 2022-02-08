@@ -13,8 +13,8 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name="register"),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name="post"),
     path('continent/<slug:cat_slug>/', CountryContinent.as_view(), name="continent"),
+    path('contact/', ContactFormView.as_view(), name="contact"),
 
-    path('contact/', contact, name="contact"),
     # path('country/', list_country),
     # path('country/<slug:country>/', name_country),
     # re_path(r'^archive/(?P<year>[0-9]{4})/', archive),  # Регулярные выражения
