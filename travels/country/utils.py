@@ -6,6 +6,7 @@ from .models import *
 menu = [
     {'title': "О сайте", 'url_name': 'about'},
     {'title': "Добавить страну", 'url_name': 'add_page'},
+    {'title': "Добавить континент", 'url_name': 'add_continent'},
     {'title': "Обратная связь", 'url_name': 'contact'},
 ]
 
@@ -21,7 +22,7 @@ class DataMixin:
             cache.set('cats', cats, 60)
         user_menu = menu.copy()  # Если пользователь не авторизован, то удаляется вторая запись
         if not self.request.user.is_authenticated:
-            user_menu.pop(1)
+            del user_menu[1:3]
 
         context['menu'] = user_menu
 

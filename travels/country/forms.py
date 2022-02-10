@@ -37,6 +37,26 @@ class AddPostForm(forms.ModelForm):
         return title
 
 
+class AddContinentForm(forms.ModelForm):
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['cat'].empty_label = "Не выбран"
+
+    class Meta:
+        model = Continent
+        fields = ['name', 'slug']
+        # widgets = {
+        #     'title': forms.TextInput(attrs={'class': 'form-input'}),
+        #     'content': forms.Textarea(attrs={'cols': 60, 'rows': 10}),
+        # }
+
+    def clean_title(self):
+        name = self.cleaned_data['name']
+        if len(name) > 100:
+            raise ValidationError("Длина превышает 100 символов")
+        return name
+
+
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Логин:', widget=forms.TextInput(attrs={'class': 'form-input'}))
     email = forms.EmailField(label='Почта:', widget=forms.EmailInput(attrs={'class': 'form-input'}))

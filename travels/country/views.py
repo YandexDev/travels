@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import AddPostForm, RegisterUserForm, LoginUserForm, ContactForm
+from .forms import AddPostForm, RegisterUserForm, LoginUserForm, ContactForm, AddContinentForm
 from .models import Country, Continent
 from .utils import DataMixin
 
@@ -67,6 +67,19 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Добавление страны')
+        return context | c_def
+
+
+class AddContinent(LoginRequiredMixin, DataMixin, CreateView):
+    form_class = AddContinentForm
+    template_name = "country/addcontinent.html"
+    success_url = reverse_lazy('homepage')  # перенаправляет на страницу, после отправки формы
+    login_url = reverse_lazy('homepage')  # Перенаправляет если пользователь не авторизован
+    raise_exception = True  # Если пользователь не аторизован - выбрасывает 403 ошибку - доступ запрещен
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Добавление континента')
         return context | c_def
 
 
